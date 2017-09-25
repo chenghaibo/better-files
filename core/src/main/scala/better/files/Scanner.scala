@@ -72,16 +72,17 @@ object Scanner {
     def apply[A](f: String => A): Read[A] = new Read[A] {
       override def apply(s: String) = f(s)
     }
-    implicit val string     : Read[String]     = Read(identity)
-    implicit val boolean    : Read[Boolean]    = Read(_.toBoolean)
-    implicit val byte       : Read[Byte]       = Read(_.toByte)  //TODO: https://issues.scala-lang.org/browse/SI-9706
-    implicit val short      : Read[Short]      = Read(_.toShort)
-    implicit val int        : Read[Int]        = Read(_.toInt)
-    implicit val long       : Read[Long]       = Read(_.toLong)
-    implicit val bigInt     : Read[BigInt]     = Read(BigInt(_))
-    implicit val float      : Read[Float]      = Read(_.toFloat)
-    implicit val double     : Read[Double]     = Read(_.toDouble)
-    implicit val bigDecimal : Read[BigDecimal] = Read(BigDecimal(_))
+    implicit val string           : Read[String]      = Read(identity)
+    implicit val boolean          : Read[Boolean]     = Read(_.toBoolean)
+    implicit val byte             : Read[Byte]        = Read(_.toByte)  //TODO: https://issues.scala-lang.org/browse/SI-9706
+    implicit val short            : Read[Short]       = Read(_.toShort)
+    implicit val int              : Read[Int]         = Read(_.toInt)
+    implicit val long             : Read[Long]        = Read(_.toLong)
+    implicit val bigInt           : Read[BigInt]      = Read(BigInt(_))
+    implicit val float            : Read[Float]       = Read(_.toFloat)
+    implicit val double           : Read[Double]      = Read(_.toDouble)
+    implicit val bigDecimal       : Read[BigDecimal]  = Read(BigDecimal(_))
+    implicit def option[A: Read]  : Read[Option[A]]   = Read(s => when(s.nonEmpty)(implicitly[Read[A]].apply(s)))
   }
 }
 
